@@ -12,6 +12,9 @@ import com.openclassrooms.security.JwtTokenProvider;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * RegistrationController handles API requests for user registration.
+ */
 @RestController
 @RequestMapping("/api/auth/register")
 public class RegistrationController {
@@ -19,12 +22,28 @@ public class RegistrationController {
     private final RegistrationService registrationService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Constructor to inject dependencies for RegistrationService and
+     * JwtTokenProvider.
+     *
+     * @param registrationService the service to handle user registration
+     * @param jwtTokenProvider    the provider to generate JWT tokens
+     */
     @Autowired
     public RegistrationController(RegistrationService registrationService, JwtTokenProvider jwtTokenProvider) {
         this.registrationService = registrationService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * Handles the registration of a new user. Validates the required fields and
+     * generates a JWT token if the registration is successful.
+     * 
+     * @param registerRequest the request body containing the user's name, email,
+     *                        and password
+     * @return a ResponseEntity containing the JWT token or an error response if
+     *         validation fails
+     */
     @PostMapping
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         // Check for missing fields (name, email, password)

@@ -13,17 +13,36 @@ import com.openclassrooms.service.MessageService;
 
 import java.util.Collections;
 
+/**
+ * MessageController handles API requests for creating and managing messages.
+ */
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController {
+
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
     private final MessageService messageService;
 
+    /**
+     * Constructor to inject dependencies for MessageService.
+     * 
+     * @param messageService the message service to handle message operations
+     */
     @Autowired
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
+    /**
+     * Handles the request to post a message. Verifies if the user is authenticated
+     * and that the request contains the
+     * required fields before creating and saving the message.
+     * 
+     * @param messageRequest the request body containing message details
+     * @param authentication the authentication object to verify if the user is
+     *                       logged in
+     * @return a ResponseEntity indicating the result of the message creation
+     */
     @PostMapping
     public ResponseEntity<?> postMessage(@RequestBody MessageModel messageRequest, Authentication authentication) {
         // Check if the user is authenticated
