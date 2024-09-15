@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.entity.User;
 import com.openclassrooms.model.LoginRequest;
 import com.openclassrooms.model.RegisterRequest;
+import com.openclassrooms.model.UserInfoResponse;
 import com.openclassrooms.security.JwtTokenProvider;
 
 import java.util.Collections;
@@ -35,6 +36,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    // Méthode pour récupérer les informations utilisateur par ID
+    public UserInfoResponse getUserById(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+
+        return new UserInfoResponse(user.getId(), user.getName(), user.getEmail(), user.getCreated_at(),
+                user.getUpdated_at());
     }
 
     /**

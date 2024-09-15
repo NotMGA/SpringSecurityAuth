@@ -1,14 +1,11 @@
 package com.openclassrooms.controllers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,10 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.openclassrooms.entity.Rental;
+import com.openclassrooms.model.RentalModel;
 import com.openclassrooms.service.RentalService;
 
 /**
- * Controller for managing rental properties. It provides endpoints for creating, retrieving, 
+ * Controller for managing rental properties. It provides endpoints for
+ * creating, retrieving,
  * and updating rentals.
  */
 @RestController
@@ -37,6 +36,17 @@ public class RentalController {
      * 
      * @param rentalService the service responsible for handling rental operations
      */
+    // Inject the upload directory from application.properties
+    @Value("${file.image-dir}")
+    private String imageDir;
+
+    // Inject server URL (e.g., http://localhost:3001)
+    @Value("${server.url:http://localhost}")
+    private String serverUrl;
+
+    @Value("${server.port:3001}")
+    private String serverPort;
+
     @Autowired
     public RentalController(RentalService rentalService) {
         this.rentalService = rentalService;
@@ -61,23 +71,46 @@ public class RentalController {
             @RequestParam("picture") MultipartFile picture,
             @RequestParam("description") String description) throws IOException {
 
-        // Define the directory to store images
-        String uploadDirectory = "D:\\Formation\\Openclassroom\\projet3\\SpringSecurityAuth\\src\\main\\resources\\image";
+        // Define the path to store the image in the upload directory
         String fileName = picture.getOriginalFilename();
-        Path filePath = Paths.get(uploadDirectory, fileName);
-        Files.write(filePath, picture.getBytes()); // Save the picture on disk
+        Path filePath = Paths.get(imageDir, fileName);
+
+        // Ensure the directories exist, or create them if not
+        if (!Files.exists(filePath.getParent())) {
+            Files.createDirectories(filePath.getParent());
+        }
+
+        // Save the picture on disk
+        Files.write(filePath, picture.getBytes());
 
         // Create a new rental object and set its properties
         Rental rental = new Rental();
         rental.setName(name);
         rental.setSurface(surface);
         rental.setPrice(price);
-        rental.setPicture("/images/" + fileName); // Save the image path
+
         rental.setDescription(description);
 
+        // Construct the full image URL including http://localhost:8080
+        String imageUrl = String.format("%s:%s/image/%s", serverUrl, serverPort, fileName);
+        rental.setPicture(imageUrl);
+
         // Save the rental and return the response
-        Rental savedRental = rentalService.createRental(rental);
-        return ResponseEntity.ok(savedRental);
+        /*
+         * Rental savedRental = rentalService.createRental(rental);
+         * RentalModel rentalModel = new RentalModel(savedRental);
+         * Map<String, Object> response = new HashMap<>();
+         * response.put("message", "Rental created!");
+         * response.put("rental", savedRental);
+         * return ResponseEntity.status(HttpStatus.CREATED).body(response);
+         */
+
+        // Save the rental
+        RentalModel rentalModel = rentalService.createRental(rental); // Save and return RentalModel
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Rental created!");
+        response.put("rental", rentalModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**
@@ -87,27 +120,27 @@ public class RentalController {
      * @return ResponseEntity containing the Rental object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Integer id) {
-        return ResponseEntity.ok(rentalService.getRentalById(id));
+    public ResponseEntity<RentalModel> getRentalById(@PathVariable Integer id) {
+        RentalModel rentalModel = rentalService.getRentalById(id);
+        return ResponseEntity.ok(rentalModel);
     }
 
     /**
      * Endpoint to retrieve all rentals.
      * 
-     * @return ResponseEntity containing a list of rentals, or a 204 No Content status if no rentals exist
+     * @return ResponseEntity containing a list of rentals, or a 204 No Content
+     *         status if no rentals exist
      */
     @GetMapping
     public ResponseEntity<?> getRentalAll() {
-        List<Rental> rentals = rentalService.getRentalByAll();
+        List<RentalModel> rentals = rentalService.getRentalByAll();
 
         if (rentals.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        // Create a response similar to the Mockoon API format
         Map<String, Object> response = new HashMap<>();
         response.put("rentals", rentals);
-
         return ResponseEntity.ok(response);
     }
 
@@ -137,7 +170,7 @@ public class RentalController {
         updatedRental.setDescription(description);
 
         // Update the rental and return the response
-        Rental savedRental = rentalService.updateRental(id, updatedRental);
-        return ResponseEntity.ok(savedRental);
+        RentalModel rentalModel = rentalService.updateRental(id, updatedRental); // Convert to RentalModel
+        return ResponseEntity.ok(rentalModel);
     }
 }

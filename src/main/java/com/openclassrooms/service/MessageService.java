@@ -39,7 +39,7 @@ public class MessageService {
         message.setUserId(messageRequest.getUserId());
         message.setRentalId(messageRequest.getRentalId());
         message.setContent(messageRequest.getMessage());
-        message.setCreatedAt(java.time.LocalDateTime.now());
+        message.setCreated_at(java.time.LocalDateTime.now());
 
         // Save the message in the database and return it
         return messageRepository.save(message);

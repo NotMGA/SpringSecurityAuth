@@ -2,6 +2,8 @@ package com.openclassrooms.service;
 
 import com.openclassrooms.Repository.RentalRepository;
 import com.openclassrooms.entity.Rental;
+import com.openclassrooms.model.RentalModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,21 +40,22 @@ public class RentalService {
      * @param rental The rental property to be created.
      * @return The created and saved rental property.
      */
-    public Rental createRental(Rental rental) {
+    public RentalModel createRental(Rental rental) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // Retrieve the authenticated user's email.
         Integer userId = userService.getUserIdByEmail(userEmail); // Get user ID from email.
-        rental.setOwnerId(userId); // Assign the owner ID to the rental.
-        rental.setCreatedAt(LocalDateTime.now()); // Set the creation timestamp.
-        rental.setUpdatedAt(LocalDateTime.now()); // Set the update timestamp.
+        rental.setOwner_id(userId); // Assign the owner ID to the rental.
+        rental.setCreated_at(LocalDateTime.now()); // Set the creation timestamp.
+        rental.setUpdated_at(LocalDateTime.now()); // Set the update timestamp.
 
         // Limit the description length to 2000 characters if necessary.
         if (rental.getDescription() != null && rental.getDescription().length() > 2000) {
             rental.setDescription(rental.getDescription().substring(0, 2000));
         }
         System.out.println("Creating rental with owner ID: " + userId);
+        Rental savedRental = rentalRepository.save(rental);
 
-        return rentalRepository.save(rental); // Save the rental in the database.
+        return new RentalModel(savedRental); // Save the rental in the database.
     }
 
     /**
@@ -62,9 +65,12 @@ public class RentalService {
      * @return The rental property found by the provided ID.
      * @throws RuntimeException If the rental property is not found.
      */
-    public Rental getRentalById(Integer id) {
-        return rentalRepository.findById(id)
+    public RentalModel getRentalById(Integer id) {
+        Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
+
+        // Convert to RentalModel
+        return new RentalModel(rental);
     }
 
     /**
@@ -73,13 +79,15 @@ public class RentalService {
      * @return A list of all rental properties.
      * @throws RuntimeException If no rental properties are found.
      */
-    public List<Rental> getRentalByAll() {
+    public List<RentalModel> getRentalByAll() {
         List<Rental> rentals = rentalRepository.findAll();
         System.out.println("Rentals found: " + rentals.size());
         if (rentals.isEmpty()) {
             throw new RuntimeException("No rentals found");
         }
-        return rentals;
+        return rentals.stream()
+                .map(RentalModel::new) // Mapping Rental to RentalModel
+                .toList();
     }
 
     /**
@@ -90,7 +98,7 @@ public class RentalService {
      * @return The updated rental property.
      * @throws RuntimeException If the rental property is not found.
      */
-    public Rental updateRental(Integer id, Rental updatedRental) {
+    public RentalModel updateRental(Integer id, Rental updatedRental) {
         // Find the existing rental in the database.
         Rental existingRental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
@@ -100,10 +108,11 @@ public class RentalService {
         existingRental.setSurface(updatedRental.getSurface());
         existingRental.setPrice(updatedRental.getPrice());
         existingRental.setDescription(updatedRental.getDescription());
-        existingRental.setUpdatedAt(LocalDateTime.now()); // Update the timestamp.
+        existingRental.setUpdated_at(LocalDateTime.now()); // Update the timestamp.
 
         // Save and return the updated rental.
-        return rentalRepository.save(existingRental);
+        Rental savedRental = rentalRepository.save(existingRental);
+        return new RentalModel(savedRental);
     }
 
     /**
@@ -114,5 +123,9 @@ public class RentalService {
      */
     public boolean existsById(Integer id) {
         return rentalRepository.existsById(id);
+    }
+
+    public Integer getUserIdByEmail(String email) {
+        return userService.getUserIdByEmail(email);
     }
 }

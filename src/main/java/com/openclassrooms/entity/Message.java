@@ -21,7 +21,7 @@ public class Message {
     private String content; // Rename 'message' to 'content' to avoid conflict
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     // Constructors, getters, and setters
     public Message() {
@@ -59,11 +59,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 }

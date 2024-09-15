@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // Public endpoints (login and registration)
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                .requestMatchers("/image/**").permitAll()
                 // Secured endpoints that require authentication
                 .requestMatchers("/api/auth/me").authenticated()
                 .requestMatchers("/api/rentals/**").authenticated()

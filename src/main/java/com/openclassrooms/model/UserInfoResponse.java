@@ -1,25 +1,36 @@
 package com.openclassrooms.model;
 
+import java.util.Date;
+import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserInfoResponse {
     private Integer id;
     private String name;
     private String email;
-    private String createdAt;
-    private String updatedAt;
+
+    @JsonProperty("created_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private LocalDate created_at;
+
+    @JsonProperty("updated_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    private LocalDate updated_at;
 
     // Constructors
     public UserInfoResponse() {
     }
 
-    public UserInfoResponse(Integer id, String name, String email, String createdAt, String updatedAt) {
+    public UserInfoResponse(Integer id, String name, String email, LocalDate created_at, LocalDate updated_at) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -44,19 +55,19 @@ public class UserInfoResponse {
         this.email = email;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public LocalDate getCreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(LocalDate created_at) {
+        this.created_at = created_at;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public LocalDate getUpdated_at() {
+        return updated_at;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdated_at(LocalDate updated_at) {
+        this.updated_at = updated_at;
     }
 }

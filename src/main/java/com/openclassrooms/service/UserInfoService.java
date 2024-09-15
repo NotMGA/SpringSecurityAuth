@@ -51,8 +51,8 @@ public class UserInfoService {
                     user.getId(), // Ensure that user.getId() returns an Integer
                     user.getName(),
                     user.getEmail(),
-                    user.getCreatedAt().toString(),
-                    user.getUpdatedAt().toString());
+                    user.getCreated_at(),
+                    user.getUpdated_at());
         }
 
         // Return null if user is not found
