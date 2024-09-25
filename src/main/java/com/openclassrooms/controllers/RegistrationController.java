@@ -57,7 +57,7 @@ public class RegistrationController {
         // Check for missing fields (name, email, password)
         if (registerRequest.getName() == null || registerRequest.getEmail() == null
                 || registerRequest.getPassword() == null) {
-            return ResponseEntity.badRequest().body(new HashMap<>()); // Return 400 if any field is missing
+            return ResponseEntity.badRequest().body(new HashMap<>()); // Return 401 if unauthorized
         }
 
         // Register the user
