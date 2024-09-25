@@ -4,11 +4,11 @@ Ce projet est une application basée sur Spring Boot . Elle utilise Maven comme 
 
  ## Prérequis
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur votre machine:
+- JDK 17+
+- Maven 3.8.1+
+- Front end : https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring
 
-1. JDK 17+
-  2. Maven 3.8.1+
-
-  ## Installation
+## Installation
 
 ### Compiler le projet
 Utilisez Maven pour compiler le projet et télécharger les dépendances nécessaires :
@@ -61,3 +61,6 @@ Dans le fichier application.properties , configurez la connexion à votre base d
 Utilisez la commande suivante pour démarrer l'application :
 
 - `mvn spring-boot:run`
+## SWAGGER
+
+http://localhost:3001/swagger-ui/index.html
