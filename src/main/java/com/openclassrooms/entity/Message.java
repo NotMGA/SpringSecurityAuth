@@ -1,9 +1,16 @@
 package com.openclassrooms.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "MESSAGES")
 public class Message {
 
@@ -18,52 +25,14 @@ public class Message {
     private Integer rentalId;
 
     @Column(nullable = false, length = 2000)
-    private String content; // Rename 'message' to 'content' to avoid conflict
+    private String message;
 
     @Column(nullable = false)
     private LocalDateTime created_at;
 
+    @Column(nullable = false)
+    private LocalDateTime updated_at;
+
     // Constructors, getters, and setters
-    public Message() {
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getRentalId() {
-        return rentalId;
-    }
-
-    public void setRentalId(Integer rentalId) {
-        this.rentalId = rentalId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
 }

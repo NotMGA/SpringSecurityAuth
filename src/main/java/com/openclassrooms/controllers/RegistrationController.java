@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.entity.User;
 import com.openclassrooms.model.RegisterRequest;
 import com.openclassrooms.service.RegistrationService;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import com.openclassrooms.security.JwtTokenProvider;
 
 import java.util.HashMap;
@@ -45,6 +49,10 @@ public class RegistrationController {
      *         validation fails
      */
     @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized ")
+    })
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         // Check for missing fields (name, email, password)
         if (registerRequest.getName() == null || registerRequest.getEmail() == null

@@ -48,7 +48,7 @@ public class AuthService {
      */
     public String loginUser(LoginRequest loginRequest) {
         // Fetch user by email (login)
-        User user = userRepository.findByEmail(loginRequest.getLogin())
+        User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Check if the provided password matches the stored hashed password

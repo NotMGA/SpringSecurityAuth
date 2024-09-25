@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.entity.Message;
 import com.openclassrooms.model.MessageModel;
 import com.openclassrooms.Repository.MessageRepository;
+import java.time.LocalDateTime;
 
 /**
  * Service responsible for managing messages in the application.
@@ -38,8 +39,9 @@ public class MessageService {
         Message message = new Message();
         message.setUserId(messageRequest.getUserId());
         message.setRentalId(messageRequest.getRentalId());
-        message.setContent(messageRequest.getMessage());
-        message.setCreated_at(java.time.LocalDateTime.now());
+        message.setMessage(messageRequest.getMessage());
+        message.setCreated_at(LocalDateTime.now());
+        message.setUpdated_at(LocalDateTime.now());
 
         // Save the message in the database and return it
         return messageRepository.save(message);

@@ -20,6 +20,9 @@ import com.openclassrooms.entity.Rental;
 import com.openclassrooms.model.RentalModel;
 import com.openclassrooms.service.RentalService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 /**
  * Controller for managing rental properties. It provides endpoints for
  * creating, retrieving,
@@ -27,6 +30,10 @@ import com.openclassrooms.service.RentalService;
  */
 @RestController
 @RequestMapping("/api/rentals")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful "),
+        @ApiResponse(responseCode = "401", description = "Unauthorized ")
+})
 public class RentalController {
 
     private final RentalService rentalService;
@@ -69,8 +76,12 @@ public class RentalController {
             @RequestParam("surface") double surface,
             @RequestParam("price") double price,
             @RequestParam("picture") MultipartFile picture,
-            @RequestParam("description") String description) throws IOException {
-
+            @RequestParam("description") String description,
+            Authentication authentication) throws IOException {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // Return 401 Unauthorized if the user is not authenticated
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        }
         // Define the path to store the image in the upload directory
         String fileName = picture.getOriginalFilename();
         Path filePath = Paths.get(imageDir, fileName);
@@ -95,16 +106,6 @@ public class RentalController {
         String imageUrl = String.format("%s:%s/image/%s", serverUrl, serverPort, fileName);
         rental.setPicture(imageUrl);
 
-        // Save the rental and return the response
-        /*
-         * Rental savedRental = rentalService.createRental(rental);
-         * RentalModel rentalModel = new RentalModel(savedRental);
-         * Map<String, Object> response = new HashMap<>();
-         * response.put("message", "Rental created!");
-         * response.put("rental", savedRental);
-         * return ResponseEntity.status(HttpStatus.CREATED).body(response);
-         */
-
         // Save the rental
         RentalModel rentalModel = rentalService.createRental(rental); // Save and return RentalModel
         Map<String, Object> response = new HashMap<>();
@@ -120,7 +121,16 @@ public class RentalController {
      * @return ResponseEntity containing the Rental object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RentalModel> getRentalById(@PathVariable Integer id) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized ")
+    })
+    public ResponseEntity<RentalModel> getRentalById(@PathVariable Integer id, Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // Return 401 Unauthorized if the user is not authenticated
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         RentalModel rentalModel = rentalService.getRentalById(id);
         return ResponseEntity.ok(rentalModel);
     }
@@ -132,13 +142,17 @@ public class RentalController {
      *         status if no rentals exist
      */
     @GetMapping
-    public ResponseEntity<?> getRentalAll() {
-        List<RentalModel> rentals = rentalService.getRentalByAll();
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized ")
+    })
+    public ResponseEntity<?> getRentalAll(Authentication authentication) {
 
-        if (rentals.isEmpty()) {
-            return ResponseEntity.noContent().build();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            // Return 401 Unauthorized if the user is not authenticated
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
+        List<RentalModel> rentals = rentalService.getRentalByAll();
         Map<String, Object> response = new HashMap<>();
         response.put("rentals", rentals);
         return ResponseEntity.ok(response);

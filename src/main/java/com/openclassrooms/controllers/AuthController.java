@@ -42,7 +42,6 @@ public class AuthController {
      * @return a ResponseEntity containing a JWT token
      */
     @PostMapping("/login")
-    @Operation(summary = "User login", description = "Authenticates the user and returns a JWT token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful login, returns JWT token"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid username or password")
@@ -53,7 +52,7 @@ public class AuthController {
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "Invalid username or password"));
+                    .body(Collections.singleton("error"));
         }
     }
 }

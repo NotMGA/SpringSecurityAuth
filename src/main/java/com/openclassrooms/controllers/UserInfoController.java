@@ -2,6 +2,10 @@ package com.openclassrooms.controllers;
 
 import com.openclassrooms.model.UserInfoResponse;
 import com.openclassrooms.service.UserInfoService;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,31 +46,21 @@ public class UserInfoController {
      *         invalid
      */
     @GetMapping("/me")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized ")
+    })
     public ResponseEntity<?> getUserInfo(
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         // Check if the authorization header is present and starts with "Bearer "
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}"); // Return 401 if token is missing
         }
-
         // Extract the JWT token from the header
         String token = authorizationHeader.substring(7); // Remove the "Bearer " prefix
-
-        try {
-            // Use the service to get user information from the token
-            UserInfoResponse userInfoResponse = userInfoService.getUserInfoFromToken(token);
-
-            // Check if the service returned null (invalid token)
-            if (userInfoResponse == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT token response null");
-            }
-
-            // Return the user information in the response
-            return ResponseEntity.ok(userInfoResponse);
-
-        } catch (Exception e) {
-            // Catch any exceptions related to the token validation process
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT token: " + e.getMessage());
-        }
+        // Use the service to get user information from the token
+        UserInfoResponse userInfoResponse = userInfoService.getUserInfoFromToken(token);
+        // Return the user information in the response
+        return ResponseEntity.ok(userInfoResponse);
     }
 }

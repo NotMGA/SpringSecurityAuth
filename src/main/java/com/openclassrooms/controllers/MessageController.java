@@ -11,13 +11,20 @@ import com.openclassrooms.model.MessageModel;
 import com.openclassrooms.entity.Message;
 import com.openclassrooms.service.MessageService;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.Collections;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MessageController handles API requests for creating and managing messages.
  */
 @RestController
 @RequestMapping("/api/messages")
+
 public class MessageController {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
@@ -44,6 +51,11 @@ public class MessageController {
      * @return a ResponseEntity indicating the result of the message creation
      */
     @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized "),
+            @ApiResponse(responseCode = "400", description = "Bad request ")
+    })
     public ResponseEntity<?> postMessage(@RequestBody MessageModel messageRequest, Authentication authentication) {
         // Check if the user is authenticated
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -58,13 +70,12 @@ public class MessageController {
             return ResponseEntity.badRequest().body(Collections.emptyMap());
         }
 
-        // Log the message request
-        logger.info("Message request received: " + messageRequest.getMessage());
-
         // Create and save the message
         Message message = messageService.createMessage(messageRequest);
 
         // Return success response with message
-        return ResponseEntity.ok(Collections.singletonMap("message", "Message sent with success"));
+        Map<String, String> successResponse = new HashMap<>();
+        successResponse.put("message", "Message sent with success");
+        return ResponseEntity.ok(successResponse);
     }
 }
