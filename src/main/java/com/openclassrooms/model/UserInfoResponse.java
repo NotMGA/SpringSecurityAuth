@@ -1,6 +1,5 @@
 package com.openclassrooms.model;
 
-import java.util.Date;
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +20,6 @@ public class UserInfoResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private LocalDate updated_at;
 
-    // Constructors
     public UserInfoResponse(Integer id, String name, String email, LocalDate created_at, LocalDate updated_at) {
         this.id = id;
         this.name = name;

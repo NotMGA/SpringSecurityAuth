@@ -21,7 +21,7 @@ public class SwaggerConfiguration {
                 .info(new Info().title("Rentals API")
                         .description("API DOCUMENTATION  Rentals API.")
                         .version("1.0")
-                        .contact(new Contact().name("Freyer Maxime")));
+                        .contact(new Contact().name("Freyre Maxime")));
     }
 
     private SecurityScheme createAPIKeyScheme() {

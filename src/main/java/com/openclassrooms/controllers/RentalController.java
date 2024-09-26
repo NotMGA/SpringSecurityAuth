@@ -23,11 +23,6 @@ import com.openclassrooms.service.RentalService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-/**
- * Controller for managing rental properties. It provides endpoints for
- * creating, retrieving,
- * and updating rentals.
- */
 @RestController
 @RequestMapping("/api/rentals")
 @ApiResponses(value = {
@@ -38,11 +33,6 @@ public class RentalController {
 
     private final RentalService rentalService;
 
-    /**
-     * Constructor that injects RentalService.
-     * 
-     * @param rentalService the service responsible for handling rental operations
-     */
     // Inject the upload directory from application.properties
     @Value("${file.image-dir}")
     private String imageDir;
@@ -60,15 +50,9 @@ public class RentalController {
     }
 
     /**
-     * Endpoint to create a new rental.
+     * create a new rental.
      * 
-     * @param name        the name of the rental
-     * @param surface     the surface area of the rental
-     * @param price       the price of the rental
-     * @param picture     the picture file of the rental
-     * @param description the description of the rental
      * @return ResponseEntity containing the created Rental object
-     * @throws IOException if there's an issue saving the picture file
      */
     @PostMapping
     public ResponseEntity<?> createRental(
@@ -102,12 +86,12 @@ public class RentalController {
 
         rental.setDescription(description);
 
-        // Construct the full image URL including http://localhost:8080
+        // Construct the full image URL
         String imageUrl = String.format("%s:%s/image/%s", serverUrl, serverPort, fileName);
         rental.setPicture(imageUrl);
 
         // Save the rental
-        RentalModel rentalModel = rentalService.createRental(rental); // Save and return RentalModel
+        RentalModel rentalModel = rentalService.createRental(rental);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Rental created!");
         response.put("rental", rentalModel);
@@ -115,8 +99,6 @@ public class RentalController {
     }
 
     /**
-     * Endpoint to retrieve a rental by its ID.
-     * 
      * @param id the ID of the rental
      * @return ResponseEntity containing the Rental object
      */
@@ -137,9 +119,6 @@ public class RentalController {
 
     /**
      * Endpoint to retrieve all rentals.
-     * 
-     * @return ResponseEntity containing a list of rentals, or a 204 No Content
-     *         status if no rentals exist
      */
     @GetMapping
     @ApiResponses(value = {
@@ -159,13 +138,6 @@ public class RentalController {
     }
 
     /**
-     * Endpoint to update a rental by its ID.
-     * 
-     * @param id          the ID of the rental to update
-     * @param name        the updated name of the rental
-     * @param surface     the updated surface area of the rental
-     * @param price       the updated price of the rental
-     * @param description the updated description of the rental
      * @return ResponseEntity containing the updated Rental object
      */
     @PutMapping("/{id}")
@@ -184,7 +156,7 @@ public class RentalController {
         updatedRental.setDescription(description);
 
         // Update the rental and return the response
-        RentalModel rentalModel = rentalService.updateRental(id, updatedRental); // Convert to RentalModel
+        RentalModel rentalModel = rentalService.updateRental(id, updatedRental);
         return ResponseEntity.ok(rentalModel);
     }
 }

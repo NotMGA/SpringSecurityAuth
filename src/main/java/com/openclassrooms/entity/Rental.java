@@ -22,7 +22,7 @@ public class Rental {
     private Double price;
     private String description;
 
-    @Column(name = "picture") // Stocker uniquement le chemin de l'image
+    @Column(name = "picture")
     private String picture;
 
     @Column(name = "owner_id")

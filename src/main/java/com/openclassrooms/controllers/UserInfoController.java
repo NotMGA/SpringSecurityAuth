@@ -14,32 +14,18 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Controller responsible for handling user information requests.
- * Provides an endpoint to retrieve user information based on the provided JWT
- * token.
- */
 @RestController
 @RequestMapping("/api/auth")
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    /**
-     * Constructor for injecting dependencies.
-     * 
-     * @param userInfoService the service responsible for fetching user info from
-     *                        the token
-     */
     @Autowired
     public UserInfoController(UserInfoService userInfoService) {
         this.userInfoService = userInfoService;
     }
 
     /**
-     * Endpoint to retrieve user information based on a JWT token.
-     * The token must be passed in the "Authorization" header with the "Bearer"
-     * scheme.
      * 
      * @param authorizationHeader the authorization header containing the JWT token
      * @return ResponseEntity containing the user info or an error if the token is
@@ -56,11 +42,8 @@ public class UserInfoController {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{}"); // Return 401 if token is missing
         }
-        // Extract the JWT token from the header
-        String token = authorizationHeader.substring(7); // Remove the "Bearer " prefix
-        // Use the service to get user information from the token
+        String token = authorizationHeader.substring(7); // Remove the "Bearer "
         UserInfoResponse userInfoResponse = userInfoService.getUserInfoFromToken(token);
-        // Return the user information in the response
         return ResponseEntity.ok(userInfoResponse);
     }
 }

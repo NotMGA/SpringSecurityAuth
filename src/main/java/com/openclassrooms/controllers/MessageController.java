@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * MessageController handles API requests for creating and managing messages.
- */
 @RestController
 @RequestMapping("/api/messages")
 
@@ -30,11 +27,6 @@ public class MessageController {
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
     private final MessageService messageService;
 
-    /**
-     * Constructor to inject dependencies for MessageService.
-     * 
-     * @param messageService the message service to handle message operations
-     */
     @Autowired
     public MessageController(MessageService messageService) {
         this.messageService = messageService;

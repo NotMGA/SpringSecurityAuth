@@ -7,22 +7,12 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.entity.User;
 import com.openclassrooms.model.RegisterRequest;
 
-/**
- * Service responsible for user registration.
- * Handles the creation of new users and ensures proper validation.
- */
 @Service
 public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor for RegistrationService.
-     *
-     * @param userRepository  The repository to interact with User data.
-     * @param passwordEncoder The encoder used to securely hash user passwords.
-     */
     @Autowired
     public RegistrationService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -30,11 +20,7 @@ public class RegistrationService {
     }
 
     /**
-     * Registers a new user based on the provided request model.
-     *
-     * @param registerRequest The data needed to create a new user.
-     * @return The created and saved User entity.
-     * @throws IllegalArgumentException if the email is already in use.
+     * Registers a new user .
      */
     public User registerUser(RegisterRequest registerRequest) {
         // Check if a user with the provided email already exists

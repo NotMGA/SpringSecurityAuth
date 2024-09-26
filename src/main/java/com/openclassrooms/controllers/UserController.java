@@ -22,7 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Endpoint GET /user/{id}
     @GetMapping("/user/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful "),
@@ -30,14 +29,12 @@ public class UserController {
     })
     public ResponseEntity<?> getUserById(@PathVariable Integer id,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
-        // Vérifier la présence et validité du token JWT
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization header error");
         }
 
-        // Utiliser le service pour obtenir les informations de l'utilisateur par ID
+        // Get user information by the id
         UserInfoResponse userInfo = userService.getUserById(id);
-        // Retourner les informations de l'utilisateur
         return ResponseEntity.ok(userInfo);
     }
 }

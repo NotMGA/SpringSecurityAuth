@@ -15,11 +15,10 @@ public class RentalModel {
     private Double price;
     private String picture;
     private String description;
-    private Integer owner_id; // Add owner ID field
-    private LocalDateTime created_at; // Add created_at field
-    private LocalDateTime updated_at; // Add updated_at field
+    private Integer owner_id;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 
-    // Constructor to map Rental entity to DTO
     public RentalModel(Rental rental) {
         this.id = rental.getId();
         this.name = rental.getName();
@@ -27,9 +26,9 @@ public class RentalModel {
         this.price = rental.getPrice();
         this.picture = rental.getPicture();
         this.description = rental.getDescription();
-        this.owner_id = rental.getOwner_id(); // Map owner_id
-        this.created_at = rental.getCreated_at(); // Map created_at
-        this.updated_at = rental.getUpdated_at(); // Map updated_at
+        this.owner_id = rental.getOwner_id();
+        this.created_at = rental.getCreated_at();
+        this.updated_at = rental.getUpdated_at();
     }
 
     // Getters and setters

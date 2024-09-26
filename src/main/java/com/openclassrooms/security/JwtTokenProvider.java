@@ -14,11 +14,6 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import io.jsonwebtoken.security.Keys;
 
-/**
- * Provides methods to create, validate, and parse JWT tokens.
- * It also extracts tokens from HTTP requests and retrieves the username from
- * the token.
- */
 @Component
 public class JwtTokenProvider {
 
@@ -29,10 +24,7 @@ public class JwtTokenProvider {
     private long validityInMilliseconds;
 
     /**
-     * Generates a JWT token for the provided username without any roles.
-     *
-     * @param username the username to include in the token
-     * @return the generated JWT token as a String
+     * Generates a JWT token for the provided username
      */
     public String createToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
@@ -51,7 +43,6 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
 
-        // Log the generated token (for debugging purposes)
         System.out.println("Generated JWT Token: " + token);
 
         return token;
@@ -60,10 +51,6 @@ public class JwtTokenProvider {
     /**
      * Validates the JWT token.
      * It checks the signature and verifies that the token is not expired.
-     *
-     * @param token the JWT token to validate
-     * @return true if the token is valid, false otherwise
-     * @throws RuntimeException if the token is invalid
      */
     public boolean validateToken(String token) {
         try {
@@ -77,9 +64,6 @@ public class JwtTokenProvider {
 
     /**
      * Extracts the username from a valid JWT token.
-     *
-     * @param token the JWT token from which to extract the username
-     * @return the username as a String
      */
     public String getUsername(String token) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -88,15 +72,11 @@ public class JwtTokenProvider {
 
     /**
      * Resolves the JWT token from the Authorization header of an HTTP request.
-     * The token must start with "Bearer ".
-     *
-     * @param request the HTTP request from which to extract the token
-     * @return the JWT token as a String, or null if not found
      */
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7); // Remove the "Bearer " prefix
+            return bearerToken.substring(7); // Remove the "Bearer "
         }
         return null;
     }

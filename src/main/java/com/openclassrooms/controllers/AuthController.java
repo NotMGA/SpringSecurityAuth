@@ -11,24 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.model.LoginRequest;
 import com.openclassrooms.service.AuthService;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-/**
- * AuthController handles authentication requests such as login.
- */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
 
-    /**
-     * Constructor that injects AuthService for authentication operations.
-     * 
-     * @param authService the authentication service
-     */
     @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
