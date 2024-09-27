@@ -26,11 +26,7 @@ public class AuthController {
     }
 
     /**
-     * Handles the login request and returns a JWT token upon successful
-     * authentication.
-     * 
-     * @param loginRequest the login request containing username and password
-     * @return a ResponseEntity containing a JWT token
+     * login request and returns a JWT token issuccessful
      */
     @PostMapping("/login")
     @ApiResponses(value = {

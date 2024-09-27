@@ -26,10 +26,7 @@ public class UserInfoController {
     }
 
     /**
-     * 
-     * @param authorizationHeader the authorization header containing the JWT token
-     * @return ResponseEntity containing the user info or an error if the token is
-     *         invalid
+     * Get user info
      */
     @GetMapping("/me")
     @ApiResponses(value = {

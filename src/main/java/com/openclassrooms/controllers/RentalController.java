@@ -51,8 +51,6 @@ public class RentalController {
 
     /**
      * create a new rental.
-     * 
-     * @return ResponseEntity containing the created Rental object
      */
     @PostMapping
     public ResponseEntity<?> createRental(
@@ -99,8 +97,7 @@ public class RentalController {
     }
 
     /**
-     * @param id the ID of the rental
-     * @return ResponseEntity containing the Rental object
+     * retrive rental by id
      */
     @GetMapping("/{id}")
     @ApiResponses(value = {
@@ -137,9 +134,6 @@ public class RentalController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * @return ResponseEntity containing the updated Rental object
-     */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(
             @PathVariable Integer id,

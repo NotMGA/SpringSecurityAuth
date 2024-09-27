@@ -22,6 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Get User info by id
+     */
     @GetMapping("/user/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful "),

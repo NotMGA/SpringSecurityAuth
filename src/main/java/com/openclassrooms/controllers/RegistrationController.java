@@ -30,13 +30,7 @@ public class RegistrationController {
     }
 
     /**
-     * Handles the registration of a new user. Validates the required fields and
-     * generates a JWT token if the registration is successful.
-     * 
-     * @param registerRequest the request body containing the user's name, email,
-     *                        and password
-     * @return a ResponseEntity containing the JWT token or an error response if
-     *         validation fails
+     * registration of a new user.
      */
     @PostMapping
     @ApiResponses(value = {

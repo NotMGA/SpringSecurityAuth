@@ -33,14 +33,7 @@ public class MessageController {
     }
 
     /**
-     * Handles the request to post a message. Verifies if the user is authenticated
-     * and that the request contains the
-     * required fields before creating and saving the message.
-     * 
-     * @param messageRequest the request body containing message details
-     * @param authentication the authentication object to verify if the user is
-     *                       logged in
-     * @return a ResponseEntity indicating the result of the message creation
+     * post message
      */
     @PostMapping
     @ApiResponses(value = {
