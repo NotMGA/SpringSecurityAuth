@@ -26,10 +26,10 @@ Utilisez Maven pour compiler le projet et télécharger les dépendances nécess
 
 - Aller sur MySQL command line client et
   Copier cela :
-  CREATE DATABASE nom_data_base
-  USE nom_data_base
+ - CREATE DATABASE nom_data_base
+ - USE nom_data_base
 
-- CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`);
+
 - CREATE TABLE `USERS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255),
@@ -59,6 +59,7 @@ Utilisez Maven pour compiler le projet et télécharger les dépendances nécess
   `created_at` timestamp,
   `updated_at` timestamp
   );
+- CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`);
 
 ## Configurer la base de données
 
