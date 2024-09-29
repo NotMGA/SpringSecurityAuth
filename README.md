@@ -66,9 +66,10 @@ Dans le fichier application.properties , configurez la connexion à votre base d
 
 - spring.datasource.url=jdbc:mysql://localhost:3306/locataire
 
-dans l inviter de commande power shell -$env:DB_USERNAME="ypur_db_username"
- -$env:DB_PASSWORD="your_db_password"
--$env:JWT_SECRET="your_JWTsecret"
+dans l inviter de commande power shell , configurer les données sensible  :
+ - `$env:DB_USERNAME="ypur_db_username"`
+- `$env:DB_PASSWORD="your_db_password"`
+- `$env:JWT_SECRET="your_JWTsecret"`
 
 ## Démarrer l'application
 
