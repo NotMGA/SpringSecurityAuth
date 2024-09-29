@@ -26,9 +26,8 @@ Utilisez Maven pour compiler le projet et télécharger les dépendances nécess
 
 - Aller sur MySQL command line client et
   Copier cela :
- - CREATE DATABASE nom_data_base
- - USE nom_data_base
-
+- CREATE DATABASE nom_data_base
+- USE nom_data_base
 
 - CREATE TABLE `USERS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -61,13 +60,15 @@ Utilisez Maven pour compiler le projet et télécharger les dépendances nécess
   );
 - CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`);
 
-## Configurer la base de données
+## Configurer la base de données et les données sensible
 
 Dans le fichier application.properties , configurez la connexion à votre base de données :
 
 - spring.datasource.url=jdbc:mysql://localhost:3306/locataire
-- spring.datasource.username=nom_utilisateur
-- spring.datasource.password=mot_de_passe
+
+dans l inviter de commande power shell -$env:DB_USERNAME="ypur_db_username"
+ -$env:DB_PASSWORD="your_db_password"
+-$env:JWT_SECRET="your_JWTsecret"
 
 ## Démarrer l'application
 
